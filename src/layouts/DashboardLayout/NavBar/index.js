@@ -32,55 +32,10 @@ const user = {
 
 const items = [
   {
-    href: '/app/inquiry/My',
+    href: '/',
     icon: BarChartIcon,
-    title: 'My Work'
-  },
-  {
-    href: '/app/inquiry/all',
-    icon: BarChartIcon,
-    title: 'All Work'
+    title: 'PokeGallery'
   }
-  // {
-  //   href: '/app/dashboard',
-  //   icon: BarChartIcon,
-  //   title: 'Dashboard'
-  // },
-  // {
-  //   href: '/app/customers',
-  //   icon: UsersIcon,
-  //   title: 'Customers'
-  // },
-  // {
-  //   href: '/app/products',
-  //   icon: ShoppingBagIcon,
-  //   title: 'Products'
-  // },
-  // {
-  //   href: '/app/account',
-  //   icon: UserIcon,
-  //   title: 'Account'
-  // },
-  // {
-  //   href: '/app/settings',
-  //   icon: SettingsIcon,
-  //   title: 'Settings'
-  // },
-  // {
-  //   href: '/login',
-  //   icon: LockIcon,
-  //   title: 'Login'
-  // },
-  // {
-  //   href: '/register',
-  //   icon: UserPlusIcon,
-  //   title: 'Register'
-  // },
-  // {
-  //   href: '/404',
-  //   icon: AlertCircleIcon,
-  //   title: 'Error'
-  // }
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +48,11 @@ const useStyles = makeStyles((theme) => ({
     top: 64,
     height: 'calc(100% - 64px)',
     boxShadow: theme.shadows[3],
-    borderColor: theme.palette.text.primary
+    borderColor: theme.palette.text.primary,
+
+  },
+  drawerRoot: { 
+    backgroundColor: 'red'
   },
   avatar: {
     cursor: 'pointer',
@@ -122,33 +81,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      >
-        <Avatar
-          className={classes.avatar}
-          component={RouterLink}
-          src={user.avatar}
-          to="/app/account"
-        />
-        <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
-        >
-          {user.name}
-        </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.jobTitle}
-        </Typography>
-      </Box>
-      <Divider />
       <Box p={2}>
         <List>
           {items.map((item) => (
@@ -181,7 +113,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       <Hidden mdDown>
         <Drawer
           anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
+          classes={{root:classes.drawerRoot, paper: classes.desktopDrawer }}
+          PaperProps={{root:classes.drawerRoot}}
           open
           variant="persistent"
         >

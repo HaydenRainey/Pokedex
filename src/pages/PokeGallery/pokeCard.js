@@ -1,53 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { CardMedia, CardContent, Card, CardActions, Button, Typography } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
+    height: '20em'
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  sprite: {
+    maxHeight: '15em',
+    objectFit: 'contain'
   },
   title: {
-    fontSize: 14,
+    fontSize: 18,
   },
   pos: {
     marginBottom: 12,
   },
 });
 
-export default function PokeCard() {
+const PokeCard = ({pokemonName, pokemonId, url}) => {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  const [loaded, setLoaded] = useState(false);
+  const [pokemon, setPokemon] = useState(null);
+  useEffect(() => {
+    axios.get(url)
+        .then((r) => {
+          setPokemon(r.data);
+          setLoaded(true);
+        })
+    
+  }, [])
+  
 
   return (
-    <Card className={classes.root} variant="outlined">
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="h2">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    loaded 
+    ? (
+      <Card className={classes.root} variant="outlined">
+        {pokemon 
+          && <CardMedia 
+            className={classes.sprite}
+            component="img"
+            image={pokemon.sprites.other["official-artwork"].front_default}
+            alt={pokemonName}
+          />
+        }
+        
+        <CardContent>
+          <Typography variant="h1" className={classes.title} >
+            {pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}
+          </Typography>
+          
+        </CardContent>
+      </Card>
+    )
+    : <Skeleton className={classes.root} variant="rectangular"></Skeleton>
   );
 }
+
+export default PokeCard;

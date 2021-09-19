@@ -19,12 +19,14 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightMedium,
     justifyContent: 'flex-start',
     letterSpacing: 0,
+    fontSize: '1em',
     padding: '10px 8px',
     textTransform: 'none',
     width: '100%'
   },
   icon: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   title: {
     marginRight: 'auto'
