@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import PokeCard from './pokeCard';
 import axios from 'axios';
@@ -18,19 +18,29 @@ const useStyles = makeStyles((theme) => ({
 
 const PokeGalleryPage = () => {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(25);
   const [pokemonCount, setPokemonCount] = useState(0);
   const [pokemon, setPokemon] = useState(null);
 
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    const offset = (page - 1) * pageLimit;
+    axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${pageLimit}&offset=${offset}`)
+      .then((v) => {
+        setPokemon(v.data.results)
+        setPokemonCount(v.data.count)
+      })
+  },[page])
 
   const handlePageChange = (event, value) => {
+    console.log('page: ' + value)
     setPage(value);
   }
 
   const createPokeCard = (poke, classes) => {
     return (
-      <Grid item key={getPokeId(poke.url)} xl={3} lg={4} md={6} xs={6}>
+      <Grid item key={getPokeId(poke.url)} xl={3} lg={4} md={6} xs={12}>
         <PokeCard
           className={classes.PokeCard}
           pokemonName={poke.name}
@@ -42,17 +52,10 @@ const PokeGalleryPage = () => {
 
   const getPokeId = (url) => {
     const id = url.split('/')[6]
-    console.log(id);
     return id;
   }
 
-  useEffect(() => {
-    axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${pageLimit}`)
-      .then((v) => {
-        setPokemon(v.data.results)
-        setPokemonCount(v.data.count)
-      })
-  }, [])
+
 
   return (
     <Page className={classes.root} title="Products">
@@ -67,7 +70,7 @@ const PokeGalleryPage = () => {
         <Box mt={3} display="flex" justifyContent="center">
           <Pagination
             color="primary"
-            count={pokemonCount / pageLimit}
+            count={Math.floor( pokemonCount / pageLimit)}
             page={page}
             onChange={handlePageChange}
             size="small" />

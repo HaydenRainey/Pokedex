@@ -59,8 +59,12 @@ const useStyles = makeStyles((theme) => ({
     width: 64,
     height: 64
   },
-  NavBar: {
-    
+  navItem:{
+    color: 'white'
+  },
+  navBar: {
+    backgroundColor: 'white',
+    color: 'white'
   }
 }));
 
@@ -80,6 +84,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       height="100%"
       display="flex"
       flexDirection="column"
+      className={classes.navBar}
     >
       <Box p={2}>
         <List>
@@ -89,6 +94,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
               key={item.title}
               title={item.title}
               icon={item.icon}
+              className={classes.navItem}
             />
           ))}
         </List>

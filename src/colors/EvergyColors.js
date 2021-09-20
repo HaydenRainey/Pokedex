@@ -1,5 +1,5 @@
 //todo: move to package
-export const evergyColors = {
+export  const EvergyColors = {
     'Indigo':'#003353',
     'Cobalt':'#004E9A',
     'BrightCobalt': '#317CC0',
@@ -25,3 +25,5 @@ export const evergyColors = {
     'UtilityYellowBackground':'',
     'UtilityGreenBackground':''
 };
+
+

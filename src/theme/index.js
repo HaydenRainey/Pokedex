@@ -1,20 +1,20 @@
 import { createTheme, colors } from '@material-ui/core';
 import shadows from './shadows';
-import {evergyColors} from '../colors/colors';
+import {EvergyColors} from '../colors/EvergyColors';
 import typography from './typography';
 
 const theme = createTheme({
   palette: {
     background: {
-      dark: evergyColors.WebGreyBackground,
+      dark: EvergyColors.WebGreyBackground,
       default: colors.common.white,
       paper: colors.common.white
     },
     primary: {
-      main: '#E3350D'
+      main: '#CC0000'
     },
     secondary: {
-      main: '#EE6B2F'
+      main: '#FF0000'
     },
     border: {
       main: 'black'
@@ -27,8 +27,9 @@ const theme = createTheme({
       },
     },
     text: {
-      primary: evergyColors.DarkTextGrey,
-      secondary: evergyColors.TextGrey
+      primary: EvergyColors.DarkTextGrey,
+      secondary: EvergyColors.TextGrey,
+      white: '#fff'
     }
   },
   spacing: [0,4,6,7,8,9,10,11,16,32,64],

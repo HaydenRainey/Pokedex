@@ -4,7 +4,7 @@ const Logo = (props) => {
   return (
     <img
       alt="Logo"
-      src="/static/logo.svg"
+      src="/static/poke_search_logo.png"
       {...props}
     />
   );

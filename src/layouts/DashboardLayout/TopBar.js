@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: 60,
     height: 60
+  },
+  logo:{
+    maxWidth: '200px',
+    paddingLeft: '0px;',
+    marginLeft: '0px'
   }
 }));
 
@@ -42,7 +47,7 @@ const TopBar = ({
     >
       <Toolbar>
         <RouterLink style={{marginLeft: '25px'}} to="/">
-          <Logo />
+          <Logo className={classes.logo} />
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
