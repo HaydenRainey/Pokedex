@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 const PokeGalleryPage = () => {
   const classes = useStyles();
   const [page, setPage] = useState(1);
@@ -25,6 +24,7 @@ const PokeGalleryPage = () => {
 
   const isInitialMount = useRef(true);
   useEffect(() => {
+    console.log('wheeee')
     const offset = (page - 1) * pageLimit;
     axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${pageLimit}&offset=${offset}`)
       .then((v) => {
@@ -40,11 +40,10 @@ const PokeGalleryPage = () => {
 
   const createPokeCard = (poke, classes) => {
     return (
-      <Grid item key={getPokeId(poke.url)} xl={3} lg={4} md={6} xs={12}>
+      <Grid item key={poke.name} xl={3} lg={4} md={6} xs={12}>
         <PokeCard
           className={classes.PokeCard}
           pokemonName={poke.name}
-          pokemonId={getPokeId(poke.url)}
           url={poke.url} />
       </Grid>
     )
