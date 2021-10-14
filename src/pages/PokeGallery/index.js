@@ -4,7 +4,6 @@ import PokeCard from './pokeCard';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
-import { initial } from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,24 +39,17 @@ const PokeGalleryPage = () => {
 
   const createPokeCard = (poke, classes) => {
     return (
-      <Grid item key={poke.name} xl={3} lg={4} md={6} xs={12}>
+      <Grid item key={poke.name} xl={3} lg={4} md={3} xs={12}>
         <PokeCard
-          className={classes.PokeCard}
-          pokemonName={poke.name}
-          url={poke.url} />
+          pokemonName={poke.name} />
       </Grid>
     )
   }
-
-  const getPokeId = (url) => {
-    const id = url.split('/')[6]
-    return id;
-  }
-
-
-
+  
   return (
-    <Page className={classes.root} title="Products">
+    <
+// @ts-ignore
+    Page className={classes.root} title="Products">
       <Container className={classes.container}  maxWidth={false}>
         <Box mt={3}>
           <Grid container spacing={8}>

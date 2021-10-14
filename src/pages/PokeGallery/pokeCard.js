@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardMedia, CardContent, Card, CardActions, Button, Typography } from '@material-ui/core';
+import { CardMedia, CardContent, Card, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { PokemonColors } from 'src/colors/PokeTypeColors';
+import {PokeModalClickHandler} from 'src/components/PokeModal';
 import usePokemon from 'src/hooks/usePokemon';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,25 +43,23 @@ const getBgColor = (type) => {
 }
 
 
-
-const PokeCard = ({pokemonName, onClick, url}) => {
+const PokeCard = ({pokemonName}) => {
   const classes = useStyles();
   const [name, setName] = useState(pokemonName);
   const pokemon = usePokemon(name);
   const [bgColor, setBgColor] = useState('#fff');
 
-  const onCardClick = () => {
-    alert('click');
-    console.log(pokemon);
-  }
 
-  useEffect(() => {},[pokemon]);
+  useEffect(() => {
+    //setBgColor(getBgColor(pokemon.type));
+  },[pokemon]);
   
 
   return (
     pokemon !== null
     ? (
-      <Card onClick={onCardClick} className={classes.root} style={{backgroundColor:bgColor}}  variant="elevation">
+      <PokeModalClickHandler pokemon={pokemon} className={classes.root} style={{backgroundColor:bgColor}}>
+        <Card variant="elevation">
         {pokemon !== null
           && <CardMedia 
             className={classes.sprite}
@@ -69,15 +68,16 @@ const PokeCard = ({pokemonName, onClick, url}) => {
             alt={pokemon.name}
           />
         }
-        
         <CardContent classes={{root:classes.cardTitle}}>
           <Typography variant="h1" className={classes.title} >
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
           </Typography>
         </CardContent>
       </Card>
+      </PokeModalClickHandler>
+      
     )
-    : <Skeleton className={classes.loading} variant="rectangular"></Skeleton>
+    : <Skeleton className={classes.loading} variant="rect"></Skeleton>
   );
 }
 
