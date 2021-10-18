@@ -20,10 +20,10 @@ const PokeGalleryPage = () => {
   const [pageLimit, setPageLimit] = useState(25);
   const [pokemonCount, setPokemonCount] = useState(0);
   const [pokemon, setPokemon] = useState(null);
+  console.log('gallery page')
 
   const isInitialMount = useRef(true);
   useEffect(() => {
-    console.log('wheeee')
     const offset = (page - 1) * pageLimit;
     axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${pageLimit}&offset=${offset}`)
       .then((v) => {
@@ -33,7 +33,6 @@ const PokeGalleryPage = () => {
   },[page])
 
   const handlePageChange = (event, value) => {
-    console.log('page: ' + value)
     setPage(value);
   }
 

@@ -46,13 +46,14 @@ const getBgColor = (type) => {
 const PokeCard = ({pokemonName}) => {
   const classes = useStyles();
   const [name, setName] = useState(pokemonName);
+  console.log('pokecard')
   const pokemon = usePokemon(name);
   const [bgColor, setBgColor] = useState('#fff');
 
 
   useEffect(() => {
     //setBgColor(getBgColor(pokemon.type));
-  },[pokemon]);
+  },[]);
   
 
   return (

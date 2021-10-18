@@ -3,7 +3,7 @@ import axios from 'axios';
 
 function usePokemon(pokemonName){
     const [pokemon,setPokemon] = useState(null);
-    console.log(pokemonName);
+    console.log('usePokemon called: ' + pokemonName);
     //load pokemon from pokeapi based on id
     //TODO: move api to config file 
     useEffect(() => {
