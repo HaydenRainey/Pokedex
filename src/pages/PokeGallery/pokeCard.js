@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardMedia, CardContent, Card, CardActions, Button, Typography } from '@material-ui/core';
+import { CardMedia, CardContent, Card, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import axios from 'axios';
 import { PokemonColors } from 'src/colors/PokeTypeColors';
-import clsx from 'clsx';
-import { red } from '@material-ui/core/colors';
+import {PokeModalClickHandler} from 'src/components/PokeModal';
+import usePokemon from 'src/hooks/usePokemon';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,45 +42,44 @@ const getBgColor = (type) => {
   return PokemonColors[type];
 }
 
-const PokeCard = ({pokemonName, pokemonId, url}) => {
+
+const PokeCard = ({pokemonName}) => {
   const classes = useStyles();
-  const [loaded, setLoaded] = useState(false);
-  const [pokemon, setPokemon] = useState(null);
+  const [name, setName] = useState(pokemonName);
+  console.log('pokecard')
+  const pokemon = usePokemon(name);
   const [bgColor, setBgColor] = useState('#fff');
+
+
   useEffect(() => {
-    axios.get(url)
-        .then((r) => {
-          setPokemon(r.data);
-          const type = pokemon?.types[0].type.name
-          setLoaded(true);
-          setBgColor(getBgColor(type));
-        })
-    
-  }, [loaded])
+    //setBgColor(getBgColor(pokemon.type));
+  },[]);
   
 
   return (
-    loaded 
+    pokemon !== null
     ? (
-      <Card className={classes.root} style={{backgroundColor:bgColor}}  variant="elevation">
-        {pokemon 
+      <PokeModalClickHandler pokemon={pokemon} className={classes.root} style={{backgroundColor:bgColor}}>
+        <Card variant="elevation">
+        {pokemon !== null
           && <CardMedia 
             className={classes.sprite}
             
             component="img"
             image={pokemon.sprites.other["official-artwork"].front_default}
-            alt={pokemonName}
+            alt={pokemon.name}
           />
         }
-        
         <CardContent classes={{root:classes.cardTitle}}>
           <Typography variant="h1" className={classes.title} >
-            {pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}
+            {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
           </Typography>
         </CardContent>
       </Card>
+      </PokeModalClickHandler>
+      
     )
-    : <Skeleton className={classes.loading} variant="rectangular"></Skeleton>
+    : <Skeleton className={classes.loading} variant="rect"></Skeleton>
   );
 }
 
