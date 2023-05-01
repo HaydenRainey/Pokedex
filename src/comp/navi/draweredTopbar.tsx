@@ -29,24 +29,25 @@ interface DraweredTopbarProps {
    * You won't need it on your project.
    */
   window?: () => Window;
-  navItems?: NavigationItem[]
+  navItems?: NavigationItem[];
+  pageTitle: string;
 }
 
 const drawerWidth = 240;
 
 export default function DraweredTopbar(props: DraweredTopbarProps) {
-  const { window, navItems } = props;
+  const { window, navItems,pageTitle } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { mode, setMode } = useColorScheme();
-  
+
   const handleColorSchemeToggle = () => {
-    if(mode === 'light')
+    if (mode === 'light')
       setMode('dark');
-    else 
+    else
       setMode('light');
   }
-  
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -81,9 +82,9 @@ export default function DraweredTopbar(props: DraweredTopbarProps) {
                 </Link>
               ))}
               <IconButton onClick={handleColorSchemeToggle}>
-                {(mode === 'light')?
-                  <DarkModeIcon />:
-                  <LightModeIcon/>
+                {(mode === 'light') ?
+                  <DarkModeIcon /> :
+                  <LightModeIcon />
                 }
               </IconButton>
             </Box>
@@ -109,7 +110,7 @@ export default function DraweredTopbar(props: DraweredTopbarProps) {
         >
           <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-              {process.env.NEXT_PUBLIC_SITE_TITLE}
+              {pageTitle}
             </Typography>
             <Divider />
             <List>
