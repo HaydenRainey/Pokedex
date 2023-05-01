@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "prettier --write \"./src/**/*.{ts,js,css,html}",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -28,6 +29,10 @@
     "react-dom": "18.2.0",
     "react-spring": "^9.7.1",
     "sass": "^1.59.3",
+    "swr": "^2.1.5",
     "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8"
   }
 }

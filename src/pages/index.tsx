@@ -4,12 +4,16 @@ import HeroImgScroller, { HeroImgProps } from '@/comp/HeroImgScroller';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
 import WebIcon from '@mui/icons-material/Web';
+import useSWR from 'swr';
 
 
 
 
 export default function Home() {
   const theme = useTheme();
+  const pokeman = useSWR('/api/pokeapi',{
+    
+  });
 
   return (
     <Box className={styles.root}>

@@ -5,7 +5,7 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig } from '@/authConfig';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, } from '@mui/material/styles';
-import TopbarLayout from '@/layouts/topbarLayout';
+import SidebarLayout from '@/layouts/sidebarLayout';
 import { theme } from '@/theme';
 import '@/styles/globals.css';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
@@ -28,9 +28,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CssBaseline />
       <MsalProvider instance={msalInstance}>
         <main className={roboto.className}>
-          <TopbarLayout >
+          <SidebarLayout >
             <Component {...pageProps} />
-          </TopbarLayout>
+          </SidebarLayout>
         </main>
       </MsalProvider>
     </CssVarsProvider >
