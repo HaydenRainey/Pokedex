@@ -1,0 +1,31 @@
+.root{
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+
+    .arrowContainer{
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      height: 100%;
+      width: 100%;
+      background-color: rgb(103, 136, 136,0.1);
+      .arrow{
+        
+        display: flex;
+        margin: auto 0.5em;
+      }
+    }
+
+    
+    
+    img {
+      display: block;
+      width: 100%;
+      height: inherit;
+      object-fit: cover;
+    }
+  }

@@ -67,6 +67,7 @@ const PokeCard = ({pokemonName, pokemonId, url}) => {
         {pokemon 
           && <CardMedia 
             className={classes.sprite}
+            
             component="img"
             image={pokemon.sprites.other["official-artwork"].front_default}
             alt={pokemonName}

@@ -1,0 +1,28 @@
+.root{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+    .topbar{
+        display: flex;
+        
+    }
+
+    .container{
+        height: 100%;
+
+        .main{
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            
+            .content{
+                display: flex;
+                padding-top: -4px;
+                padding-bottom: 0.75em;
+                flex-grow:1;
+            }
+        }
+    }
+}
+
