@@ -11,6 +11,7 @@ import '@/styles/globals.css';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 import { Inter } from 'next/font/google';
 import { Roboto } from 'next/font/google';
+import { SWRConfig } from 'swr';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 const inter = Inter({ subsets: ['latin'] });
@@ -27,11 +28,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     <CssVarsProvider theme={theme}>
       <CssBaseline />
       <MsalProvider instance={msalInstance}>
-        <main className={roboto.className}>
-          <SidebarLayout >
-            <Component {...pageProps} />
-          </SidebarLayout>
-        </main>
+        <SWRConfig value={{
+          refreshInterval: 300000,
+          fetcher: (resource, init) => fetch(resource, init).then(res => res)
+        }}>
+          <main className={roboto.className}>
+            <SidebarLayout >
+              <Component {...pageProps} />
+            </SidebarLayout>
+          </main>
+        </SWRConfig>
       </MsalProvider>
     </CssVarsProvider >
   );

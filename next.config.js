@@ -10,6 +10,14 @@ const nextConfig = {
       }
       //new URL('https://via.placeholder.com/300x200.png?text=Sample+Image')
     ]
+  },
+  async rewrites(){
+    return [
+      {
+        source: '/api/poke:path*',
+        destination: `${process.env.POKE_API_URI}:path*`
+      }
+    ]
   }
 }
 

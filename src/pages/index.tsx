@@ -11,9 +11,8 @@ import useSWR from 'swr';
 
 export default function Home() {
   const theme = useTheme();
-  const pokeman = useSWR('/api/pokeapi',{
-    
-  });
+  const pokeman = useSWR('/api/poke/pokemon/bulbasaur');
+  console.log(pokeman);
 
   return (
     <Box className={styles.root}>

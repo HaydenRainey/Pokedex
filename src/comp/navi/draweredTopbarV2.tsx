@@ -34,7 +34,7 @@ interface DraweredTopbarProps {
   drawerTitle?: string;
   toolbarTitle: string;
   drawerWidth?: number;
-
+  
 }
 
 
@@ -85,12 +85,6 @@ export default function DraweredTopbar(props: DraweredTopbarProps) {
                   </Button>
                 </Link>
               ))}
-              <IconButton onClick={handleColorSchemeToggle}>
-                {(mode === 'light') ?
-                  <DarkModeIcon /> :
-                  <LightModeIcon />
-                }
-              </IconButton>
             </Box>
           </Container>
         </Toolbar>
