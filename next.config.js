@@ -14,8 +14,8 @@ const nextConfig = {
   async rewrites(){
     return [
       {
-        source: '/api/poke:path*',
-        destination: `${process.env.POKE_API_URI}:path*`
+        source: '/api/poke/:path*',
+        destination: `https://pokeapi.co/api/v2/:path*`
       }
     ]
   }

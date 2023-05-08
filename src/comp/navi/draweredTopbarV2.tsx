@@ -41,7 +41,7 @@ interface DraweredTopbarProps {
 export default function DraweredTopbar(props: DraweredTopbarProps) {
   const { window, navItems, toolbarTitle, drawerTitle = toolbarTitle, drawerWidth = 240 } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
-  const [mobileOpen, setMobileOpen] = React.useState(true);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const { mode, setMode } = useColorScheme();
   const theme = useTheme();
 
@@ -56,11 +56,19 @@ export default function DraweredTopbar(props: DraweredTopbarProps) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  
+
   return (
     <>
       <AppBar component="nav">
         <Toolbar variant="regular">
-          <Container sx={{ display: 'flex', ml: `${drawerWidth}px` }}>
+          <Container sx={{ 
+            display: 'flex', 
+            ml: {
+              sm: 'none', 
+              md: `${drawerWidth}px`}, 
+            
+            }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"

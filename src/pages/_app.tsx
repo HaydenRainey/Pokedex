@@ -6,6 +6,7 @@ import { msalConfig } from '@/authConfig';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, } from '@mui/material/styles';
 import SidebarLayout from '@/layouts/sidebarLayout';
+import TopbarLayout from '@/layouts/topbarLayout';
 import { theme } from '@/theme';
 import '@/styles/globals.css';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
@@ -33,9 +34,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           fetcher: (resource, init) => fetch(resource, init).then(res => res)
         }}>
           <main className={roboto.className}>
-            <SidebarLayout >
+            <TopbarLayout >
               <Component {...pageProps} />
-            </SidebarLayout>
+            </TopbarLayout>
           </main>
         </SWRConfig>
       </MsalProvider>

@@ -28,6 +28,7 @@
     "next": "13.2.4",
     "next-http-proxy-middleware": "^1.2.5",
     "openai": "^3.2.1",
+    "pokedex-promise-v2": "^4.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-spring": "^9.7.1",
