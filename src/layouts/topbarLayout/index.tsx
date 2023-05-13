@@ -11,7 +11,7 @@ export default function TopbarLayout(props: any) {
 
   return (
     <Box className={styles.root}>
-      <DraweredTopbar navItems={navItems} />
+      <DraweredTopbar navItems={navItems} pageTitle="HR Pokedex"/>
       <Container className={styles.container}>
         <Box component="main" className={styles.main}>
           <Toolbar />

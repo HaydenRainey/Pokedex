@@ -10,17 +10,21 @@ import TopbarLayout from '@/layouts/topbarLayout';
 import { theme } from '@/theme';
 import '@/styles/globals.css';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
-import { Inter } from 'next/font/google';
-import { Roboto } from 'next/font/google';
+import { Roboto, Space_Mono } from 'next/font/google';
 import { SWRConfig } from 'swr';
 
 const msalInstance = new PublicClientApplication(msalConfig);
-const inter = Inter({ subsets: ['latin'] });
 
+const spaceMono = Space_Mono({
+  weight: '400',
+  subsets: ['latin'],
+  style: 'italic'
+})
 
 const roboto = Roboto({
   weight: '400',
   subsets: ['latin'],
+  style: 'normal'
 })
 
 
@@ -31,9 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <MsalProvider instance={msalInstance}>
         <SWRConfig value={{
           refreshInterval: 300000,
-          fetcher: (resource, init) => fetch(resource, init).then(res => res)
+          fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
         }}>
-          <main className={roboto.className}>
+          <main className={`${roboto.className} ${spaceMono.className}`}>
             <TopbarLayout >
               <Component {...pageProps} />
             </TopbarLayout>

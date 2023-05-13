@@ -1,29 +1,30 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.scss'
 import HeroImgScroller, { HeroImgProps } from '@/comp/HeroImgScroller';
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Link, List, ListItem, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
 import WebIcon from '@mui/icons-material/Web';
 import useSWR from 'swr';
-import { NamedAPIResourceList, NamedAPIResource } from 'pokedex-promise-v2';
+import { NamedAPIResourceList, NamedAPIResource, Pokemon } from 'pokedex-promise-v2';
 import React from 'react';
-
+import { PokeThumbnail, pokeThumbnail } from '../comp/pokemon/pokeThumbnail';
+import { capitalizeWord } from '@/comp/util/typehelper';
 
 
 
 export default function Home() {
   const theme = useTheme();
-  const pokeIndexResp = useSWR<NamedAPIResourceList>('/api/poke/pokemon');
-  console.log(pokeIndexResp.data?.results);
+  const { data, isLoading, isValidating } = useSWR<NamedAPIResourceList>('/api/poke/pokemon');
+  console.log(data);
 
   return (
     <Box className={styles.root}>
       {
-        (pokeIndexResp.isLoading || pokeIndexResp.isValidating) ?
+        (isLoading || isValidating) ?
           <Typography variant='caption'>
             loading...
           </Typography> :
-          <PokeIndexGrid pokeIndex={pokeIndexResp.data} />
+          <PokeIndexGrid pokeIndex={data} />
       }
 
     </Box>
@@ -37,61 +38,41 @@ interface PokeIndexGridProps {
 
 function PokeIndexGrid(props: PokeIndexGridProps) {
   const { pokeIndex } = props;
+  console.log(pokeIndex);
   return (
     <Grid container>
-      {pokeIndex?.results.map((v,i) =>
-        <PokeIndexGridItem key={i} pokemon={v}/>
-      )}
+      {pokeIndex && pokeIndex.results &&
+        pokeIndex?.results?.map((v, i) =>
+          <PokeIndexGridItem key={i} resource={v} />
+        )};
     </Grid>
   )
 }
 
 interface PokeIndexGridItemProps {
-  pokemon: NamedAPIResource;
+  resource: NamedAPIResource;
   key: React.Key;
 }
 function PokeIndexGridItem(props: PokeIndexGridItemProps) {
-  const { key, pokemon } = props;
-  return (
-    <Grid item key={key}>
+  const { key, resource } = props;
+  const { data, isLoading, error } = useSWR<Pokemon, Error>(`/api/poke/pokemon/${resource.name}`);
+  const typeName = data?.types[0].type.name ?? 'normal';
+  const theme = useTheme();
 
+  return (
+    <Grid item spacing={3} columnSpacing={4} sm={6} md={3} key={key} >
+      {data &&
+        <Link href={`/pokemon/${data.id}`} sx={{textDecoration:'none !important'}}>
+          <PokeThumbnail key={key} src={data.sprites.front_default??''} typeName={typeName} alt={data.name}>
+            <Typography variant="h6" textAlign='center' color={theme.palette.primary.contrastText} >
+              {capitalizeWord(data.name)}
+            </Typography>
+            <Typography variant="caption" textAlign='center' color={theme.palette.primary.contrastText}>
+              {data.id}
+            </Typography>
+          </PokeThumbnail>
+        </Link>
+      }
     </Grid>
   )
 }
-
-
-// // This function gets called at build time on server-side.
-// // It may be called again, on a serverless function, if
-// // revalidation is enabled and a new request comes in
-// export async function getStaticProps() {
-//   const res = await fetch('https://.../posts')
-//   const posts = await res.json()
-
-//   return {
-//     props: {
-//       posts,
-//     },
-//     // Next.js will attempt to re-generate the page:
-//     // - When a request comes in
-//     // - At most once every 10 seconds
-//     revalidate: 10, // In seconds
-//   }
-// }
-
-// // This function gets called at build time on server-side.
-// // It may be called again, on a serverless function, if
-// // the path has not been generated.
-// export async function getStaticPaths() {
-//   const res = await fetch('/api/poke/pokemon')
-//   const posts = await res.json()
-
-//   // Get the paths we want to pre-render based on posts
-//   const paths = posts.map((post) => ({
-//     params: { id: post.id },
-//   }))
-
-//   // We'll pre-render only these paths at build time.
-//   // { fallback: 'blocking' } will server-render pages
-//   // on-demand if the path doesn't exist.
-//   return { paths, fallback: 'blocking' }
-// }

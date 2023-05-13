@@ -7,6 +7,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'via.placeholder.com',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/**'
       }
       //new URL('https://via.placeholder.com/300x200.png?text=Sample+Image')
     ]
