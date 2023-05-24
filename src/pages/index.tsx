@@ -60,10 +60,17 @@ function PokeIndexGridItem(props: PokeIndexGridItemProps) {
   const theme = useTheme();
 
   return (
-    <Grid item spacing={3} columnSpacing={4} sm={6} md={3} key={key} >
+    <Grid item spacing={3} columnSpacing={4} sm={6} md={3} key={key} sx={{
+      'div:hover': {
+        boxShadow: theme.shadows[3],
+        cursor: 'pointer',
+      }
+    }}>
       {data &&
-        <Link href={`/pokemon/${data.id}`} sx={{textDecoration:'none !important'}}>
-          <PokeThumbnail key={key} src={data.sprites.front_default??''} typeName={typeName} alt={data.name}>
+        <Link href={`/pokemon/${data.id}`} sx={{
+          textDecoration:'none !important', 
+          }}>
+          <PokeThumbnail key={key} height={150} width={150} src={data.sprites.front_default??''} typeName={typeName} alt={data.name} height={150} width={150}>
             <Typography variant="h6" textAlign='center' color={theme.palette.primary.contrastText} >
               {capitalizeWord(data.name)}
             </Typography>

@@ -11,34 +11,32 @@ import { capitalizeWord } from '@/comp/util/typehelper';
   key?: React.Key | undefined,
   src: string,
   alt: string,
-  typeName: string
+  typeName: string,
+  height: number,
+  width: number
 }
 
-
 export function PokeThumbnail(props:React.PropsWithChildren<PokeThumbnailProps>) {
-  const { key,children,typeName,src, alt } = props;
+  const { key,children,typeName,src, alt, height, width } = props;
   const { mode } = useColorScheme();
   const theme = useTheme();
 
   const colors = mode === 'light' ? pokemonColors : pokemonDarkModeColors;
   const containerStyles = {
     backgroundColor: typeName ? colors[typeName] : 'red',
-    margin: theme.spacing(8),
-    paddingY: theme.spacing(10),
+    margin: theme.spacing(4),
+    width: 'auto',
+    //paddingY: theme.spacing(4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    borderRadius: '2em',
-    boxShadow: theme.shadows[5],
-    '&:hover': {
-      boxShadow: theme.shadows[8],
-      cursor: 'pointer',
-    },
+    borderRadius: '15px',
+    boxShadow: theme.shadows[2],
   };
 
   return (
     <Box key={key} sx={containerStyles}>
-      <Image src={src} height={150} width={150} alt={alt} />
+      <Image src={src} height={height} width={width} alt={alt} />
         {children}
     </Box>
   );
