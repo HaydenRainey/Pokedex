@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/bc73130a-4e6b-491e-bdac-ee37b450376f/resourceGroups/pokedex/providers/Microsoft.Web/sites/app-poke-hayde",
+    "appService.deploySubpath": "."
+}

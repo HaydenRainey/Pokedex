@@ -57,7 +57,7 @@ export default function DraweredTopbar(props: DraweredTopbarProps) {
     <>
       <AppBar component="nav">
         <Toolbar variant="regular">
-          <Container sx={{ display: 'flex' }}>
+          <Container maxWidth='md' sx={{ display: 'flex' }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"

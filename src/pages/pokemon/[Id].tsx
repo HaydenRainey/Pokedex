@@ -1,14 +1,16 @@
 import { PokeThumbnail } from "@/comp/pokemon/pokeThumbnail";
 import { capitalizeWord } from "@/comp/util/typehelper";
-import { Box, Grid, SxProps, Typography } from "@mui/material";
+import { Box, Container, Grid, SxProps, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import { Pokemon, PokemonSprites } from "pokedex-promise-v2";
+import { Ability, AbilityEffectEntry, AbilityPokemon, NamedAPIResource, Pokemon, PokemonSprites } from "pokedex-promise-v2";
 import useSWR from "swr";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { useState } from "react";
+import React from "react";
+import { useTheme } from '@mui/material';
 
 interface IndexedPokemonSprites extends PokemonSprites {
     [index: string]: any
@@ -33,50 +35,61 @@ export default function PokeView() {
         (data && !isLoading) &&
         (
             <>
-                <Grid container sx={{ marginTop: '2em' }}>
-                    <Grid item sm={12} md={6}>
-                        <Typography variant='h5' textAlign='center'>
-                            {capitalizeWord(data?.name)}
-                        </Typography>
-                        <Typography variant='caption' textAlign='center'>
-                            {data?.id}
-                        </Typography>
-                    </Grid>
-                    <Grid item sm={12} md={6}>
-                        <PokeThumbnail height={imgSize} width={imgSize} src={data.sprites.front_default ?? ''} typeName={typeName} alt={data.name} />
-                    </Grid>
-                    <Grid item sm={12}>
-                        <TabContext value={tab} >
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                    <Tab label="Overview" value="1" />
-                                    <Tab label="Detail" value="2" />
-                                    <Tab label="Item Three" value="3" />
-                                </TabList>
+                <Container maxWidth='sm'>
+                    <Grid container sx={{ marginTop: '2em' }}>
+                        <Grid item sm={12} md={12}>
+                            <Typography variant='h5' textAlign='center'>
+                                {capitalizeWord(data?.name)}
+                            </Typography>
+                            <Typography variant='caption' textAlign='center'>
+                                {data?.id}
+                            </Typography>
+                        </Grid>
+                        <Grid item sm={12} md={12} >
+                            <PokeThumbnail height={imgSize} width={imgSize} src={data.sprites.front_default ?? ''} typeName={typeName} alt={data.name} />
+                        </Grid>
+                        <Grid item sm={12} md={12}>
+                            <Box mb={3} sx={{ display: 'flex', flexDirection: 'row', overflowY: 'auto', justifyContent: 'center' }}>
+                                {Object.keys(data.sprites)
+                                    .filter((val, i) => (val !== 'versions' && val !== 'other'))
+                                    .sort((a, b) => b.localeCompare(a))//sort desc
+                                    .sort((a, b) => a.split('_')[1]
+                                        .localeCompare(b.split('_')[1])) //order default first
+                                    .map((sprite: string, i) => {
+                                        const src = indexedSprites[sprite];
+
+                                        if (src != null)//if front facing
+                                            return <PokeThumbnail height={imgSizeSm} width={imgSizeSm} src={src} typeName={typeName} alt={sprite} />
+                                    })}
+
                             </Box>
-                            <TabPanel value="1" >
-                                <Box sx={{ display: 'flex', flexDirection: 'row', overflowY: 'auto' }}>
-                                    {Object.keys(data.sprites)
-                                        .filter((val, i) => (val !== 'versions' && val !== 'other'))
-                                        .sort((a,b) => b.localeCompare(a))//sort desc
-                                        .sort((a,b) => a.split('_')[1].localeCompare(b.split('_')[1])) //order default first
-                                        .map((sprite: string, i) => {
-                                            const src = indexedSprites[sprite];
-                                            console.log('src')
-                                            console.log(sprite);
-                                            if (src != null)//if front facing
-                                                return <PokeThumbnail height={imgSizeSm} width={imgSizeSm} src={src} typeName={typeName} alt={sprite} />
-                                        })}
-                                    <Typography variant='h3'>
-                                        {data.}
-                                    </Typography>
+                            <TabContext value={tab} >
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                        <Tab label="Detail" value="1" />
+                                        <Tab label="Abilities" value="2" />
+                                        <Tab label="Item Three" value="3" />
+                                    </TabList>
                                 </Box>
-                            </TabPanel>
-                            <TabPanel value="2">Item Two</TabPanel>
-                            <TabPanel value="3">Item Three</TabPanel>
-                        </TabContext>
+                                <TabPanel value="1" >
+
+                                    <Typography variant='body1'>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam earum perspiciatis aut delectus ipsum magnam dolorem provident
+                                        consequuntur voluptas saepe sint, quisquam beatae eligendi quaerat deleniti iusto minus, nemo vero.
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate ipsa et impedit tempora hic itaque repudiandae, praesentium numquam ratione optio accusamus minima voluptatibus, eos eligendi officia velit quaerat est esse!
+                                    </Typography>
+                                </TabPanel>
+                                <TabPanel value="2">
+                                    {data.abilities.map((v, i) =>
+                                        <PokeAbilityDisplay key={i} abilityName={v.ability.name} abilityUrl={v.ability.url} />
+                                    )}
+                                </TabPanel>
+                                <TabPanel value="3">Item Three</TabPanel>
+                            </TabContext>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Container>
+
             </>
 
 
@@ -85,4 +98,33 @@ export default function PokeView() {
     )
 }
 
+interface PokeAbilityDisplayProps {
+    key: React.Key;
+    abilityUrl: string;
+    abilityName: string;
+}
 
+function PokeAbilityDisplay(props: PokeAbilityDisplayProps) {
+    const { abilityUrl,abilityName, key } = props;
+    const { data, isLoading, error } = useSWR<Ability, Error>(abilityUrl);
+    const theme = useTheme();
+
+    return (
+        <Box key={key} mb={theme.spacing(3)}>
+            {(!isLoading) ?
+                <Box>
+                    <Typography variant='h5'>
+                        {capitalizeWord(abilityName)}
+                    </Typography>
+                    <Typography variant='body1'>
+                        {data?.effect_entries[1].effect}
+                    </Typography>
+                </Box>
+                :
+                <Typography variant='caption'>
+                    loading
+                </Typography>
+            }
+        </Box>
+    );
+}

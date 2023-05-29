@@ -13,6 +13,9 @@ export const theme = extendTheme({
     h6: {
       fontFamily: 'Roboto, sans-serif'
     },
+    body1: {
+      fontFamily: 'Space Mono, monospace',
+    },
     caption: {
       fontSize: '1em',
       fontFamily: 'Space Mono, monospace',
@@ -31,7 +34,8 @@ export const theme = extendTheme({
         dark: {
           palette: {
             primary: {
-              main: '#000',
+              main: '#220000',
+              contrastText: '#ffffff'
             },
           },
         },

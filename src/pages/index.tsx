@@ -1,22 +1,21 @@
-import Head from 'next/head'
 import styles from '@/styles/Home.module.scss'
-import HeroImgScroller, { HeroImgProps } from '@/comp/HeroImgScroller';
-import { Box, Grid, Link, List, ListItem, Paper, Typography } from '@mui/material';
+import { Box, Grid, Link, Pagination, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
-import WebIcon from '@mui/icons-material/Web';
 import useSWR from 'swr';
 import { NamedAPIResourceList, NamedAPIResource, Pokemon } from 'pokedex-promise-v2';
 import React from 'react';
-import { PokeThumbnail, pokeThumbnail } from '../comp/pokemon/pokeThumbnail';
+import { PokeThumbnail } from '../comp/pokemon/pokeThumbnail';
 import { capitalizeWord } from '@/comp/util/typehelper';
 
 
 
 export default function Home() {
-  const theme = useTheme();
+  
+  const [page, setPage] = React.useState(1);
   const { data, isLoading, isValidating } = useSWR<NamedAPIResourceList>('/api/poke/pokemon');
-  console.log(data);
-
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
   return (
     <Box className={styles.root}>
       {
@@ -24,7 +23,7 @@ export default function Home() {
           <Typography variant='caption'>
             loading...
           </Typography> :
-          <PokeIndexGrid pokeIndex={data} />
+          <PokeIndexGrid pokeIndex={data} page={page} onPageChange={handleChange} />
       }
 
     </Box>
@@ -34,17 +33,28 @@ export default function Home() {
 
 interface PokeIndexGridProps {
   pokeIndex: NamedAPIResourceList | undefined;
+  page: number;
+  onPageChange:any
 }
 
 function PokeIndexGrid(props: PokeIndexGridProps) {
-  const { pokeIndex } = props;
-  console.log(pokeIndex);
+  const { pokeIndex, page = 1, onPageChange } = props;
+
+  const pageCount = (pokeIndex?.results !== undefined)?
+    Math.floor(152 / pokeIndex.results.length )
+    :1//default to one if undefined
+
+
   return (
     <Grid container>
       {pokeIndex && pokeIndex.results &&
         pokeIndex?.results?.map((v, i) =>
           <PokeIndexGridItem key={i} resource={v} />
         )};
+
+        <Grid item sm={12}>
+          <Pagination page={page} onChange={onPageChange} count={pageCount}/>
+        </Grid>
     </Grid>
   )
 }
@@ -70,7 +80,7 @@ function PokeIndexGridItem(props: PokeIndexGridItemProps) {
         <Link href={`/pokemon/${data.id}`} sx={{
           textDecoration:'none !important', 
           }}>
-          <PokeThumbnail key={key} height={150} width={150} src={data.sprites.front_default??''} typeName={typeName} alt={data.name} height={150} width={150}>
+          <PokeThumbnail key={key} height={150} width={150} src={data.sprites.front_default??''} typeName={typeName} alt={data.name}>
             <Typography variant="h6" textAlign='center' color={theme.palette.primary.contrastText} >
               {capitalizeWord(data.name)}
             </Typography>
