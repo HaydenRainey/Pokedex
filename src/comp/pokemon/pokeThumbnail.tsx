@@ -17,7 +17,7 @@ import { capitalizeWord } from '@/comp/util/typehelper';
 }
 
 export function PokeThumbnail(props:React.PropsWithChildren<PokeThumbnailProps>) {
-  const { key,children,typeName,src, alt, height, width } = props;
+  const { children,typeName,src, alt, height, width } = props;
   const { mode } = useColorScheme();
   const theme = useTheme();
 
@@ -35,7 +35,7 @@ export function PokeThumbnail(props:React.PropsWithChildren<PokeThumbnailProps>)
   };
 
   return (
-    <Box key={key} sx={containerStyles}>
+    <Box sx={containerStyles}>
       <Image src={src} height={height} width={width} alt={alt} />
         {children}
     </Box>

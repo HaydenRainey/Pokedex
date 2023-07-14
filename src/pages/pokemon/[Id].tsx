@@ -11,6 +11,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import { useState } from "react";
 import React from "react";
 import { useTheme } from '@mui/material';
+import _ from 'lodash';
 
 interface IndexedPokemonSprites extends PokemonSprites {
     [index: string]: any
@@ -51,15 +52,15 @@ export default function PokeView() {
                         <Grid item sm={12} md={12}>
                             <Box mb={3} sx={{ display: 'flex', flexDirection: 'row', overflowY: 'auto', justifyContent: 'center' }}>
                                 {Object.keys(data.sprites)
-                                    .filter((val, i) => (val !== 'versions' && val !== 'other'))
+                                    .filter((val, i) => (val !== 'versions' && val !== 'other'))//filter other
                                     .sort((a, b) => b.localeCompare(a))//sort desc
                                     .sort((a, b) => a.split('_')[1]
                                         .localeCompare(b.split('_')[1])) //order default first
                                     .map((sprite: string, i) => {
                                         const src = indexedSprites[sprite];
 
-                                        if (src != null)//if front facing
-                                            return <PokeThumbnail height={imgSizeSm} width={imgSizeSm} src={src} typeName={typeName} alt={sprite} />
+                                        if (src != null)
+                                            return <PokeThumbnail key={sprite} height={imgSizeSm} width={imgSizeSm} src={src} typeName={typeName} alt={sprite} />
                                     })}
 
                             </Box>
@@ -81,7 +82,7 @@ export default function PokeView() {
                                 </TabPanel>
                                 <TabPanel value="2">
                                     {data.abilities.map((v, i) =>
-                                        <PokeAbilityDisplay key={i} abilityName={v.ability.name} abilityUrl={v.ability.url} />
+                                        <PokeAbilityDisplay key={v.ability.name} abilityName={v.ability.name} abilityUrl={v.ability.url} />
                                     )}
                                 </TabPanel>
                                 <TabPanel value="3">Item Three</TabPanel>
@@ -89,10 +90,7 @@ export default function PokeView() {
                         </Grid>
                     </Grid>
                 </Container>
-
             </>
-
-
         )
         || 'loading...'
     )
@@ -105,19 +103,28 @@ interface PokeAbilityDisplayProps {
 }
 
 function PokeAbilityDisplay(props: PokeAbilityDisplayProps) {
-    const { abilityUrl,abilityName, key } = props;
+    const { abilityUrl,abilityName } = props;
     const { data, isLoading, error } = useSWR<Ability, Error>(abilityUrl);
     const theme = useTheme();
+    let effectText = '';
+
+    if(!isLoading || error){
+        const effect = _.pickBy(data?.effect_entries, (value,key) => {
+            return value.language.name === 'en'
+        });
+        effectText = _.flatten(Object.values(effect))[0].effect;
+    }
+
 
     return (
-        <Box key={key} mb={theme.spacing(3)}>
+        <Box  mb={theme.spacing(3)}>
             {(!isLoading) ?
                 <Box>
                     <Typography variant='h5'>
                         {capitalizeWord(abilityName)}
                     </Typography>
                     <Typography variant='body1'>
-                        {data?.effect_entries[1].effect}
+                        {effectText}
                     </Typography>
                 </Box>
                 :
