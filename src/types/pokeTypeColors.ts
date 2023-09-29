@@ -1,3 +1,5 @@
+import { useColorScheme } from "@mui/material";
+
 type PokemonColors = {
     [key: string]: string;
   };
@@ -43,5 +45,11 @@ type PokemonColors = {
     "steel": "#9D9DAC",
     "fairy": "#A76E7A"
   };
+
+  export default function usePokemonTypeColor(type: string) {
+    const { mode } = useColorScheme();
+    const colors = mode === 'light' ? pokemonColors : pokemonDarkModeColors;
+    return colors[type];
+  }
 
 export { pokemonColors, pokemonDarkModeColors };

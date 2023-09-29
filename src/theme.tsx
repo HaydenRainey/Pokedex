@@ -28,6 +28,10 @@ export const theme = extendTheme({
           palette: {
             primary: {
               main: '#ff5252',
+              contrastText: '#ffffff'
+            },
+            secondary: {
+              main: '#ff4081',
             },
           },
         },
