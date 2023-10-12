@@ -1,11 +1,12 @@
 import styles from '@/styles/Home.module.scss'
-import { Box, Grid, Link, Pagination, Typography } from '@mui/material';
+import { Box, Grid, Link, Pagination, SxProps, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
 import useSWR from 'swr';
 import { NamedAPIResourceList, NamedAPIResource, Pokemon } from 'pokedex-promise-v2';
 import React from 'react';
 import { PokeThumbnail } from '../comp/pokemon/pokeThumbnail';
 import { capitalizeWord } from '@/comp/util/typehelper';
+import { PokeGalleryItem } from '@/comp/pokemon/pokeGalleryItem';
 
 
 
@@ -39,18 +40,30 @@ interface PokeIndexGridProps {
 
 function PokeIndexGrid(props: PokeIndexGridProps) {
   const { pokeIndex, page = 1, onPageChange } = props;
-
+  const theme = useTheme();
   const pageCount = (pokeIndex?.results !== undefined)?
     Math.floor(152 / pokeIndex.results.length )
     :1//default to one if undefined
 
+  const pokeIndexGridStyles = {
+    padding: '1em',
+
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    backgroundColor: theme.palette.background.paper
+  } as SxProps
 
   return (
-    <Grid container>
+    <Grid container sx={pokeIndexGridStyles}>
       {pokeIndex && pokeIndex.results &&
         pokeIndex?.results?.map((v, i) =>
-          <PokeIndexGridItem key={i} resource={v} />
-        )};
+          <PokeIndexGridItem key={i} resource={v}  />
+        )}
 
         <Grid item sm={12}>
           <Pagination page={page} onChange={onPageChange} count={pageCount}/>
@@ -70,8 +83,9 @@ function PokeIndexGridItem(props: PokeIndexGridItemProps) {
   const theme = useTheme();
 
   return (
-    <Grid item spacing={3} columnSpacing={4} sm={6} md={3} key={key} sx={{
-      'div:hover': {
+    <Grid item sm={6} md={3} key={key} sx={{
+      padding: theme.spacing(2),
+      '>div:hover': {
         boxShadow: theme.shadows[3],
         cursor: 'pointer',
       }
@@ -80,14 +94,7 @@ function PokeIndexGridItem(props: PokeIndexGridItemProps) {
         <Link href={`/pokemon/${data.id}`} sx={{
           textDecoration:'none !important', 
           }}>
-          <PokeThumbnail key={key} height={150} width={150} src={data.sprites.front_default??''} typeName={typeName} alt={data.name}>
-            <Typography variant="h6" textAlign='center' color={theme.palette.primary.contrastText} >
-              {capitalizeWord(data.name)}
-            </Typography>
-            <Typography variant="caption" textAlign='center' color={theme.palette.primary.contrastText}>
-              {data.id}
-            </Typography>
-          </PokeThumbnail>
+          <PokeGalleryItem key={key}  src={data.sprites.front_default??''} pokemon={resource} alt={data.name}></PokeGalleryItem>
         </Link>
       }
     </Grid>

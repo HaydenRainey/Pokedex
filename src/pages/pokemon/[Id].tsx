@@ -30,7 +30,7 @@ interface IndexedPokemonSprites extends PokemonSprites {
 export default function PokeView() {
 	const router = useRouter();
 	const pokeId = router.query['Id'];
-	const imgSize = 350;
+	const imgSize = 270;
 	const imgSizeSm = 100;
 	const { data, isLoading, error } = useSWR<Pokemon, Error>(
 		`/api/poke/pokemon/${pokeId}`,
@@ -47,20 +47,7 @@ export default function PokeView() {
 		(data && !isLoading && (
 			<>
 				<Container maxWidth="sm">
-					<Grid container sx={{ marginTop: '2em' }}>
-						{/* <Grid item sm={12} md={12} display='flex' flexDirection='column' alignItems='center' >
-							<Typography variant="h4" textAlign="center" paddingLeft={5}>
-								{capitalizeWord(data?.name)} #{data?.id}
-							</Typography>
-                            <Box display='flex' ml={3}>
-                                {data?.types.map((v, i) => {
-                                    return (
-                                        <PokeTypePill key={v.type.name} typeName={v.type.name}/>
-                                    );
-                                })}
-                            </Box>
-                            
-						</Grid> */}
+					<Grid container sx={{ marginTop: '-0.5em' }}>
 						<Grid item sm={12} md={12}>
 							<PokeThumbnail
 								height={imgSize}

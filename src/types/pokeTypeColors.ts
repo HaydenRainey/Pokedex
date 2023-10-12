@@ -46,10 +46,19 @@ type PokemonColors = {
     "fairy": "#A76E7A"
   };
 
-  export default function usePokemonTypeColor(type: string) {
+  export default function usePokemonTypeColor(type: string, colorSchemeMode?: 'light' | 'dark' | undefined) {
     const { mode } = useColorScheme();
-    const colors = mode === 'light' ? pokemonColors : pokemonDarkModeColors;
-    return colors[type];
+
+    //override colorSchemeMode if it is defined
+    if (colorSchemeMode !== undefined){
+      const colors = colorSchemeMode === 'light' ? pokemonColors : pokemonDarkModeColors;
+      return colors[type];
+    }
+    //use colorSchemeMode from device
+    else{
+      const colors = mode === 'light' ? pokemonColors : pokemonDarkModeColors;
+      return colors[type];
+    }
   }
 
 export { pokemonColors, pokemonDarkModeColors };

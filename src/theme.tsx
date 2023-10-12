@@ -10,6 +10,16 @@ export const theme = extendTheme({
     h2: {
       fontSize: '3em'
     },
+    h4: {
+      fontSize: '2.4em',
+      fontFamily: 'Space Mono, monospace',
+      
+    },
+    h5: {
+      fontSize: '1.5em',
+      fontFamily: 'Space Mono, monospace',
+      
+    },
     h6: {
       fontFamily: 'Roboto, sans-serif'
     },
@@ -20,6 +30,10 @@ export const theme = extendTheme({
       fontSize: '1em',
       fontFamily: 'Space Mono, monospace',
       display: 'block'
+    },
+    button: {
+      fontFamily: 'Space Mono, monospace',
+      fontSize: '1em'
     }
   },
   spacing: (factor: number) => `${0.25 * factor}rem`, // (Bootstrap strategy),
@@ -32,6 +46,10 @@ export const theme = extendTheme({
             },
             secondary: {
               main: '#ff4081',
+            },
+            background: {
+              default: '#ffffff',
+              paper: '#E1E1E1'//off white
             },
           },
         },
