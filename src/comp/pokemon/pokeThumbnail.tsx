@@ -23,9 +23,13 @@ export function PokeThumbnail(
 
 	const theme = useTheme();
 	const backgroundColor = usePokemonTypeColor(pokemon?.types[0].type.name);
+	const inverseBackgroundColor =
+		theme.palette.mode === 'dark'
+			? usePokemonTypeColor(pokemon.types[0].type.name, 'light')
+			: usePokemonTypeColor(pokemon.types[0].type.name, 'dark');
 	let containerStyles = {
 		position: 'relative',
-		backgroundColor: backgroundColor,
+		backgroundColor: inverseBackgroundColor,
 		padding: theme.spacing(6),
 		paddingTop: theme.spacing(7),
 		paddingRight: theme.spacing(6),
@@ -35,16 +39,12 @@ export function PokeThumbnail(
 		flexDirection: 'column',
 		alignItems: 'center',
 		borderRadius: '15px',
+		border: `5px solid ${theme.palette.grey[300]}`,
+		
 		boxShadow: theme.shadows[2],
 		color: backgroundColor
-			? theme.palette.getContrastText(backgroundColor)
+			? theme.palette.getContrastText(inverseBackgroundColor)
 			: '#2a2a2a',
-		//small screen
-		// [theme.breakpoints.down('md')]: {
-		// 	padding: theme.spacing(2),
-		// 	paddingTop: theme.spacing(3),
-		// 	paddingRight: theme.spacing(2),
-		// },
 	} as SxProps;
 
 	const pokeImageContainerStyles = {
@@ -52,15 +52,18 @@ export function PokeThumbnail(
 		height: height,
 		overflow: 'visible',
 		flexGrow: 1,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: backgroundColor,
+		borderRadius: '10px',
+		border: `2px solid ${theme.palette.grey[700]}`,
+		
+		color: backgroundColor
+			? theme.palette.getContrastText(inverseBackgroundColor)
+			: '#2a2a2a',
 	};
 
-	//reposition content if size is less than 150px
-	if (width < 200) {
-		containerStyles = {
-			...containerStyles,
-
-		} as SxProps;
-	}
 	//pokemonId masked like #001
 	const pokeId = `#${pokemon?.id.toString().padStart(3, '0')}`;
 
@@ -73,7 +76,7 @@ export function PokeThumbnail(
 					width: '100%',
 				}}
 			>
-				<Typography variant={(width < 200) ? 'h4' : 'h6'} textAlign="start">
+				<Typography variant="h4" textAlign="start">
 					{capitalizeWord(pokemon?.name)}
 				</Typography>
 
@@ -81,11 +84,19 @@ export function PokeThumbnail(
 					{pokeId}
 				</Typography>
 			</Box>
-			<Grid container width="100%">
-				<Grid item md={6}>
-					<Box display="flex" mt={theme.spacing(5)} sx={{
-						flexDirection: (width < 200) ? 'column' : 'row',
-					}}>
+			<Grid container width="100%" mt={theme.spacing(4)}>
+				<Grid item sm={3}>
+					<Typography variant="h5" textAlign="start">
+						Type:
+					</Typography>
+					<Box
+						display="flex"
+						mt={theme.spacing(5)}
+						sx={{
+							flexWrap: 'wrap',
+							justifyContent: 'start',
+						}}
+					>
 						{pokemon?.types.map((v, i) => {
 							return <PokeTypePill key={v.type.name} typeName={v.type.name} />;
 						})}

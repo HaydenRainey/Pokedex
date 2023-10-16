@@ -78,23 +78,24 @@ interface PokeIndexGridItemProps {
 }
 function PokeIndexGridItem(props: PokeIndexGridItemProps) {
   const { key, resource } = props;
-  const { data, isLoading, error } = useSWR<Pokemon, Error>(`/api/poke/pokemon/${resource.name}`);
-  const typeName = data?.types[0].type.name ?? 'normal';
+  const { data: pokeBaseData, isLoading, error } = useSWR<Pokemon, Error>(`/api/poke/pokemon/${resource.name}`);
+  const typeName = pokeBaseData?.types[0].type.name ?? 'normal';
   const theme = useTheme();
 
   return (
     <Grid item sm={6} md={3} key={key} sx={{
       padding: theme.spacing(2),
-      '>div:hover': {
-        boxShadow: theme.shadows[3],
-        cursor: 'pointer',
-      }
     }}>
-      {data &&
-        <Link href={`/pokemon/${data.id}`} sx={{
+      {pokeBaseData &&
+        <Link href={`/pokemon/${pokeBaseData.id}`} sx={{
           textDecoration:'none !important', 
           }}>
-          <PokeGalleryItem key={key}  src={data.sprites.front_default??''} pokemon={resource} alt={data.name}></PokeGalleryItem>
+          <PokeGalleryItem 
+            key={key} 
+            src={pokeBaseData.sprites.front_default??''} 
+            pokemon={resource} 
+            alt={pokeBaseData.name}>
+            </PokeGalleryItem>
         </Link>
       }
     </Grid>

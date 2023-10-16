@@ -1,6 +1,14 @@
 import { PokeThumbnail } from '@/comp/pokemon/pokeThumbnail';
 import { capitalizeWord } from '@/comp/util/typehelper';
-import { Box, Container, Grid, SxProps, Typography } from '@mui/material';
+import {
+	Box,
+	Container,
+	Grid,
+	List,
+	ListItem,
+	SxProps,
+	Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import {
 	Ability,
@@ -32,75 +40,74 @@ export default function PokeView() {
 	const pokeId = router.query['Id'];
 	const imgSize = 270;
 	const imgSizeSm = 100;
-	const { data, isLoading, error } = useSWR<Pokemon, Error>(
-		`/api/poke/pokemon/${pokeId}`,
-	);
-	const typeName = data?.types[0].type.name ?? 'normal';
+	const theme = useTheme();
+	const {
+		data: pokeBaseData,
+		isLoading,
+		error,
+	} = useSWR<Pokemon, Error>(`/api/poke/pokemon/${pokeId}`);
+	const {
+		data: pokeSpeciesData,
+		isLoading: speciesIsLoading,
+		error: speciesError,
+	} = useSWR<PokemonSpecies, Error>(`/api/poke/pokemon-species/${pokeId}`);
 	const [tab, setTab] = useState('1');
-	const indexedSprites = data?.sprites as IndexedPokemonSprites;
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setTab(newValue);
 	};
 
 	return (
-		(data && !isLoading && (
+		(pokeBaseData && !isLoading && (
 			<>
 				<Container maxWidth="sm">
-					<Grid container sx={{ marginTop: '-0.5em' }}>
-						<Grid item sm={12} md={12}>
-							<PokeThumbnail
-								height={imgSize}
-								width={imgSize}
-								src={data.sprites.front_default ?? ''}
-								pokemon={data}
-								alt={data.name}
-							/>
-						</Grid>
-						<Grid item sm={12} md={12}>
-							<Box
-								mb={3}
-								sx={{
-									display: 'flex',
-									flexDirection: 'row',
-									overflowY: 'auto',
-									justifyContent: 'center',
-								}}
+					<PokeThumbnail
+						height={imgSize}
+						width={imgSize}
+						src={pokeBaseData.sprites.front_default ?? ''}
+						pokemon={pokeBaseData}
+						alt={pokeBaseData.name}
+					/>
+					<PokeEvelutionChainDisplay pokeId={pokeBaseData.id} />
+					<TabContext value={tab}>
+						<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+							<TabList
+								onChange={handleChange}
+								aria-label="lab API tabs example"
 							>
-								{/* {Object.keys(data.sprites)
-									.filter((val, i) => val !== 'versions' && val !== 'other') //filter other
-									.sort((a, b) => b.localeCompare(a)) //sort desc
-									.sort((a, b) =>
-										a.split('_')[1].localeCompare(b.split('_')[1]),
-									) //order default first
-									.map((sprite: string, i) => {
-										const src = indexedSprites[sprite];
+								<Tab label="Detail" value="1" />
+								<Tab label="Stats" value="2" />
+							</TabList>
+						</Box>
 
-										if (src != null)
-											return (
-												<PokeThumbnail
-													key={sprite}
-													height={imgSizeSm}
-													width={imgSizeSm}
-													src={src}
-													pokemon={data}
-													alt={sprite}
+						<TabPanel value="1">
+							<Grid container spacing={2}>
+								<Grid item xs={6}>
+									<Typography variant="h5" marginBottom="0.2em">
+										Description
+									</Typography>
+									<PokeFlavorTextEntry
+										key={pokeBaseData.species.url}
+										species={pokeSpeciesData}
+										language="en"
+									/>
+									<Typography variant="h5" marginBottom="0.2em">
+										Abilities
+									</Typography>
+									<List>
+										{pokeBaseData.abilities.map((v, i) => (
+											<ListItem>
+												<PokeAbilityDisplay
+													key={v.ability.name}
+													abilityName={v.ability.name}
+													abilityUrl={v.ability.url}
 												/>
-											);
-									})} */}
-							</Box>
-							<TabContext value={tab}>
-								<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-									<TabList
-										onChange={handleChange}
-										aria-label="lab API tabs example"
-									>
-										<Tab label="Stats" value="1" />
-										<Tab label="Detail" value="2" />
-									</TabList>
-								</Box>
-								<TabPanel value="1">
-									{data.stats.map((v, i) => {
+											</ListItem>
+										))}
+									</List>
+								</Grid>
+								<Grid item xs={6}>
+									{pokeBaseData.stats.map((v) => {
 										return (
 											<PokeStatDisplay
 												key={v.stat.name}
@@ -110,40 +117,22 @@ export default function PokeView() {
 											/>
 										);
 									})}
-									{/* <Grid container>
-										<Grid item>
-											
-										</Grid>
-										<Grid item>
-											
-										</Grid>
-									</Grid> */}
-								</TabPanel>
-								<TabPanel value="2">
-                                <Typography variant="h5" marginBottom='0.2em'>Description</Typography>
-                               
-									<PokeFlavorTextEntry
-										key={data.species.url}
-										speciesUrl={data.species.url}
-										language="en"
+								</Grid>
+							</Grid>
+						</TabPanel>
+						<TabPanel value="2">
+							{pokeBaseData.stats.map((v) => {
+								return (
+									<PokeStatDisplay
+										key={v.stat.name}
+										statUrl={v.stat.url}
+										baseStat={v.base_stat}
+										effort={v.effort}
 									/>
-									<Typography variant="h5" marginBottom='0.2em'>Abilities</Typography>
-                                    
-                                    <Box marginLeft='1em'>
-                                    {data.abilities.map((v, i) => (
-										<PokeAbilityDisplay
-											key={v.ability.name}
-											abilityName={v.ability.name}
-											abilityUrl={v.ability.url}
-										/>
-									))}
-                                    </Box>
-									
-								</TabPanel>
-								<TabPanel value="3">Item Three</TabPanel>
-							</TabContext>
-						</Grid>
-					</Grid>
+								);
+							})}
+						</TabPanel>
+					</TabContext>
 				</Container>
 			</>
 		)) ||
@@ -151,12 +140,32 @@ export default function PokeView() {
 	);
 }
 
+interface PokeEvelutionChainDisplayProps {
+	species: PokemonSpecies | undefined;
+}
+
+function PokeEvelutionChainDisplay(props: PokeEvelutionChainDisplayProps) {
+	const { species } = props;
+	const theme = useTheme();
+
+
+	return(
+		<Box>
+			<Typography variant="h5" marginBottom="0.2em">
+				Evolution Chain
+			</Typography>
+			<Box>
+				{species?.evolution_chain.url ?? 'loading...}
+			</Box>
+		</Box>
+	)
+}
+
 interface PokeAbilityDisplayProps {
 	key: React.Key;
 	abilityUrl: string;
 	abilityName: string;
 }
-
 function PokeAbilityDisplay(props: PokeAbilityDisplayProps) {
 	const { abilityUrl, abilityName } = props;
 	const { data, isLoading, error } = useSWR<Ability, Error>(abilityUrl);
@@ -186,32 +195,33 @@ function PokeAbilityDisplay(props: PokeAbilityDisplayProps) {
 
 interface PokeFlavorTextEntryProps {
 	key: React.Key;
-	speciesUrl: string;
+	species: PokemonSpecies | undefined;
 	language: 'en' | 'ja' | 'ko';
 }
 
 function PokeFlavorTextEntry(props: PokeFlavorTextEntryProps) {
-	const { speciesUrl, language } = props;
-	const { data, isLoading, error } = useSWR<PokemonSpecies, Error>(speciesUrl);
+	const { language, species } = props;
 	const theme = useTheme();
 	let flavorText = '';
-
-	if (!isLoading || error) {
-		const flavor = _.pickBy(data?.flavor_text_entries, (value, key) => {
-			return value.language.name === language;
-		});
-		flavorText = _.flatten(Object.values(flavor))[0].flavor_text;
-	}
+	const flavor = _.pickBy(species?.flavor_text_entries, (value, key) => {
+		return value.language.name === language;
+	});
+	flavorText = _.flatten(Object.values(flavor))[0]?.flavor_text;
+	//replace  with new line character
+	const flavorTextParagaraphs = flavorText?.split('').map((v, i) => {
+		return (
+			<Typography variant="body1" key={i} mb={theme.spacing(2)}>
+				{v}
+			</Typography>
+		);
+	});
 
 	return (
 		<Box mb={theme.spacing(3)}>
-			{!isLoading ? (
-				<Box>
-					<Typography variant="body1">{flavorText}</Typography>
-				</Box>
-			) : (
-				<Typography variant="caption">loading</Typography>
-			)}
+			<Box>
+				{flavorTextParagaraphs}
+				
+			</Box>
 		</Box>
 	);
 }
@@ -267,5 +277,3 @@ function PokeStatDisplay(props: PokeStatDisplayProps) {
 		</Box>
 	);
 }
-
-

@@ -49,11 +49,16 @@ export function PokeGalleryItem(
 		flexDirection: 'column',
 		alignItems: 'center',
 		borderRadius: '10px',
-        border: `5px solid ${theme.palette.grey[500]}`,
+        border: `5px solid ${theme.palette.grey[300]}`,
 		boxShadow: theme.shadows[2],
 		color: backgroundColor
 			? theme.palette.getContrastText(inverseBackgroundColor)
 			: '#2a2a2a',
+        '&:hover': {
+            boxShadow: theme.shadows[4],
+            //increase size of container
+            transform: 'scale(1.005)',
+        },
 	} as SxProps;
 
 	const pokeImageContainerStyles = {
@@ -62,6 +67,7 @@ export function PokeGalleryItem(
 		overflow: 'visible',
 		flexGrow: 1,
 		backgroundColor: backgroundColor,
+        border: `2px solid ${theme.palette.grey[700]}`,
 		borderRadius: '10px',
 		display: 'flex',
 		justifyContent: 'center',

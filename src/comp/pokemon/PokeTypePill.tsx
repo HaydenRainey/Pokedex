@@ -23,10 +23,12 @@ export function PokeTypePill(props: PokeTypePillProps) {
 		width: 'auto',
 		minWidth: '4em',
 		maxWidth: '6em',
-		boxShadow: theme.shadows[2],
+		border: `2px solid ${theme.palette.grey[700]}`,
+		//boxShadow: theme.shadows[2],
+		textAlign: 'center',
 		'&:hover': {
 			cursor: 'pointer',
-			boxShadow: theme.shadows[4],
+			boxShadow: theme.shadows[1],
 		}
 	} as SxProps;
 

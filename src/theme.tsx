@@ -48,8 +48,8 @@ export const theme = extendTheme({
               main: '#ff4081',
             },
             background: {
-              default: '#ffffff',
-              paper: '#E1E1E1'//off white
+              default: '#fdfdfd',
+              paper: '#fbf5ec9b'//off white
             },
           },
         },
