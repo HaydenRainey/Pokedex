@@ -68,7 +68,7 @@ export default function PokeView() {
 						pokemon={pokeBaseData}
 						alt={pokeBaseData.name}
 					/>
-					<PokeEvelutionChainDisplay pokeId={pokeBaseData.id} />
+					{/* <PokeEvelutionChainDisplay pokeId={pokeBaseData.id} /> */}
 					<TabContext value={tab}>
 						<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 							<TabList
@@ -76,7 +76,7 @@ export default function PokeView() {
 								aria-label="lab API tabs example"
 							>
 								<Tab label="Detail" value="1" />
-								<Tab label="Stats" value="2" />
+								{/* <Tab label="Stats" value="2" /> */}
 							</TabList>
 						</Box>
 
@@ -155,7 +155,7 @@ function PokeEvelutionChainDisplay(props: PokeEvelutionChainDisplayProps) {
 				Evolution Chain
 			</Typography>
 			<Box>
-				{species?.evolution_chain.url ?? 'loading...}
+				{/* {species?.evolution_chain.url ?? 'loading...} */}
 			</Box>
 		</Box>
 	)

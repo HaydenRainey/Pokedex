@@ -33,7 +33,7 @@ export function PokeThumbnail(
 		padding: theme.spacing(6),
 		paddingTop: theme.spacing(7),
 		paddingRight: theme.spacing(6),
-		width: 'auto',
+		width: '100%',
 		//paddingY: theme.spacing(4),
 		display: 'flex',
 		flexDirection: 'column',
@@ -102,7 +102,7 @@ export function PokeThumbnail(
 						})}
 					</Box>
 				</Grid>
-				<Grid item md={6} flexGrow={1}>
+				<Grid item md={9} flexGrow={1}>
 					<Box sx={pokeImageContainerStyles}>
 						<Image src={src} height={height} width={width} alt={alt} />
 					</Box>
