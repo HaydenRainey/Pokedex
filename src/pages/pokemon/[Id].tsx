@@ -76,13 +76,13 @@ export default function PokeView() {
 								aria-label="lab API tabs example"
 							>
 								<Tab label="Detail" value="1" />
-								{/* <Tab label="Stats" value="2" /> */}
+								<Tab label="Stats" value="2" /> 
 							</TabList>
 						</Box>
 
 						<TabPanel value="1">
 							<Grid container spacing={2}>
-								<Grid item xs={6}>
+								<Grid item >
 									<Typography variant="h5" marginBottom="0.2em">
 										Description
 									</Typography>
@@ -106,18 +106,7 @@ export default function PokeView() {
 										))}
 									</List>
 								</Grid>
-								<Grid item xs={6}>
-									{pokeBaseData.stats.map((v) => {
-										return (
-											<PokeStatDisplay
-												key={v.stat.name}
-												statUrl={v.stat.url}
-												baseStat={v.base_stat}
-												effort={v.effort}
-											/>
-										);
-									})}
-								</Grid>
+								
 							</Grid>
 						</TabPanel>
 						<TabPanel value="2">
