@@ -28,5 +28,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
-          run-time: 'node'
-          startup-command: 'npm install && npm run build && npm run start'
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
