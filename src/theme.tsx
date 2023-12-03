@@ -21,10 +21,10 @@ export const theme = extendTheme({
       
     },
     h6: {
-      fontFamily: 'Roboto, sans-serif'
+      fontFamily: 'Space Mono, monospace'
     },
     body1: {
-      fontFamily: 'Space Mono, monospace',
+      fontFamily: 'Roboto, sans-serif',
     },
     caption: {
       fontSize: '1em',

@@ -83,6 +83,7 @@ export default function DraweredTopbar(props: DraweredTopbarProps) {
               component="div"
               sx={{ flexGrow: 1, display: { xs: "block", sm: "block" } }}
             >
+              
               {toolbarTitle}
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
