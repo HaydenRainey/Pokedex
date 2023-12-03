@@ -155,7 +155,7 @@ function PokeEvelutionChainDisplay(props: PokeEvelutionChainDisplayProps) {
 				Evolution Chain
 			</Typography>
 			<Box>
-				{species?.evolution_chain.url ?? 'loading...}
+				{/* {species?.evolution_chain.url ?? 'loading...} */}
 			</Box>
 		</Box>
 	)
