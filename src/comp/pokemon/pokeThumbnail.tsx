@@ -5,7 +5,7 @@ import usePokemonTypeColor from '@/types/pokeTypeColors';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { capitalizeWord } from '@/comp/util/typehelper';
+import { capitalizeWord } from '@/comp/util/StringHelper';
 import { PokeTypePill } from './PokeTypePill';
 
 interface PokeThumbnailProps {

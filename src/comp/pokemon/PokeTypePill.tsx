@@ -1,5 +1,5 @@
 import usePokemonTypeColor from '@/types/pokeTypeColors';
-import { capitalizeWord } from '@/comp/util/typehelper';
+import { capitalizeWord } from '@/comp/util/StringHelper';
 import { Box, SxProps, Typography, useColorScheme } from '@mui/material';
 import React from 'react';
 import { useTheme } from '@mui/material';
