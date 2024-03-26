@@ -1,11 +1,10 @@
-import { Box, Grid, SxProps, Typography, useColorScheme } from '@mui/material';
+import { Box, Grid, SxProps, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { NamedAPIResource, Pokemon, PokemonType } from 'pokedex-promise-v2';
+import { Pokemon } from 'pokedex-promise-v2';
 import usePokemonTypeColor from '@/types/pokeTypeColors';
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { capitalizeWord } from '@/comp/util/typehelper';
+import { capitalizeWord } from '@/comp/util/StringHelper';
 import { PokeTypePill } from './PokeTypePill';
 
 interface PokeThumbnailProps {

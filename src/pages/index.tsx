@@ -4,9 +4,9 @@ import { useTheme } from '@mui/material';
 import useSWR from 'swr';
 import { NamedAPIResourceList, NamedAPIResource, Pokemon } from 'pokedex-promise-v2';
 import React from 'react';
-import { PokeThumbnail } from '../comp/pokemon/pokeThumbnail';
-import { capitalizeWord } from '@/comp/util/typehelper';
-import { PokeGalleryItem } from '@/comp/pokemon/pokeGalleryItem';
+import { PokeThumbnail } from '../comp/pokemon/PokeThumbnail';
+import { capitalizeWord } from '@/comp/util/StringHelper';
+import { PokeGalleryItem } from '@/comp/pokemon/PokeGalleryItem';
 import { set } from 'lodash';
 
 

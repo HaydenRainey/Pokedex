@@ -1,5 +1,5 @@
-import { PokeThumbnail } from '@/comp/pokemon/pokeThumbnail';
-import { capitalizeWord } from '@/comp/util/typehelper';
+import { PokeThumbnail } from '@/comp/pokemon/PokeThumbnail';
+import { capitalizeWord } from '@/comp/util/StringHelper';
 import {
 	Box,
 	Container,
